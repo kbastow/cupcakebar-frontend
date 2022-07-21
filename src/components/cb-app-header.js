@@ -164,7 +164,7 @@ customElements.define(
           <div class="app-header-main"></div>
           <nav class="app-top-nav">
             <a href="/" @click="${anchorRoute}">HOME</a>
-            <a href="/products" @click="${anchorRoute}">SHOP</a>
+            <a href="/shop" @click="${anchorRoute}">SHOP</a>
             <a href="/favouriteProducts" @click="${anchorRoute}">FAVOURITES</a>
             <img class="app-logo" src="/images/brandmark.png" />
             <a href="/aboutUs" @click="${anchorRoute}">CONTACT</a>
