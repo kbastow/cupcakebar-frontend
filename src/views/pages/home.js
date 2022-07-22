@@ -21,9 +21,7 @@ class HomeView {
           <img class="feature-img" src="/images/feature-img.png" />
           <div class="feature-txt-box">
             <img class="feature-txt" src="/images/feature-txt.png" />
-            <sl-button
-              class="shop-now-btn"@click=${() => gotoRoute("/shop")}>SHOP NOW!
-            </sl-button>
+            <sl-button class="shop-now-btn"@click=${() => gotoRoute('/shop')}> SHOP NOW! </sl-button>
           </div>
         </div>
         <div class="image-box">
