@@ -544,6 +544,16 @@ sl-button::part(base) {
   margin-top: 0px;
 }
 
+.product-btn::part(base) {
+  background: var(--brand-color);
+  color: var(--page-body-bg);
+  width: 12em;
+  height: 4em;
+  border-radius: 50px;
+  padding: 5px;
+  margin-top: 0px;
+}
+
 sl-card {
   --border-radius: 15em;
 }
