@@ -12930,7 +12930,11 @@ var _Auth = _interopRequireDefault(require("../../Auth"));
 
 var _Utils = _interopRequireDefault(require("../../Utils"));
 
-var _templateObject;
+var _Toast = _interopRequireDefault(require("../../Toast"));
+
+var _UserAPI = _interopRequireDefault(require("../../UserAPI"));
+
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12938,14 +12942,28 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 class FavouriteProductsView {
   init() {
-    document.title = 'Favourite Cupcakes';
+    document.title = "Favourite Products";
+    this.favProducts = null;
     this.render();
 
     _Utils.default.pageIntroAnim();
+
+    this.getFavProducts();
+  }
+
+  async getFavProducts() {
+    try {
+      const currentUser = await _UserAPI.default.getUser(_Auth.default.currentUser._id);
+      this.favProducts = currentUser.favouriteProducts;
+      console.log(this.favProducts);
+      this.render();
+    } catch (err) {
+      _Toast.default.show(err, "error");
+    }
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n      <div class=\"favourites\">\n      <div class=\"page-content\">        \n        <h1>Your favourite cupcakes!</h1>\n        <br>\n        <br>\n        <br>\n        <br>\n        <p>Save your favourite tasty cupcakes for later!\n        <br><b>New feature coming soon... </b></p>\n        \n      </div>     \n      </div> \n    "])), JSON.stringify(_Auth.default.currentUser));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n      <div class=\"page-content\">\n        <div class=\"products-grid\">\n          ", "\n        </div>\n      </div>\n    "])), JSON.stringify(_Auth.default.currentUser), this.favProducts == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <sl-spinner></sl-spinner> "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n                ", "\n              "])), this.favProducts.map(product => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n                    <cb-shop\n                        class=\"product-card\"\n                        id=\"", "\"\n                        productName=\"", "\"\n                        price=\"", "\"\n                        image=\"", "\"\n                      >\n                      </cb-shop>\n                  "])), product._id, product.productName, product.price, product.image))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -12954,7 +12972,7 @@ class FavouriteProductsView {
 var _default = new FavouriteProductsView();
 
 exports.default = _default;
-},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js"}],"views/pages/newProduct.js":[function(require,module,exports) {
+},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js","../../Toast":"Toast.js","../../UserAPI":"UserAPI.js"}],"views/pages/newProduct.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
