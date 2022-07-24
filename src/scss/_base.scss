@@ -500,6 +500,67 @@ a {
 
 }
 
+//Product Information Layout -----------------
+
+.productInfo {
+  border: 0px;
+  align-items: center;
+  padding-left: 50px;
+  position: relative;
+  right: 140px;
+  max-width: 600px;
+  float: right;
+}
+
+.productImg {
+  float: left;
+  width: 28%;
+  height: 103%;
+  position: relative;
+  left: 140px;
+}
+
+#ingredientsHeading {
+  position: relative;
+  top: 46px;
+}
+
+#price {
+  position: relative;
+  font-size: 20px;
+  bottom: 18px;
+}
+
+#description {
+  position: relative;
+  top: 12px;
+}
+
+#items {
+  position: relative;
+  top: 14px;
+}
+
+#ingredients {
+ position: relative;
+ top: 30px;
+}
+
+#addCart {
+  position: relative;
+  top: 50px;
+  background-color: #fff;
+  border-radius: 22px;
+  border: solid #e16a2f;
+  font-size: 14px;
+  padding: 16px 18px;
+  color: #e16a2f;
+}
+
+#addCart:hover {
+  background-color: #f5dbdf;
+}
+
 // RESPONSIVE - MOBILE -------------------
 @media all and (max-width: 768px) {
   .signinup-box {
