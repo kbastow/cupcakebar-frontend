@@ -13125,7 +13125,66 @@ class CartView {
 var _default = new CartView();
 
 exports.default = _default;
-},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js"}],"Router.js":[function(require,module,exports) {
+},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js"}],"views/pages/product.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _App = _interopRequireDefault(require("../../App"));
+
+var _litHtml = require("lit-html");
+
+var _Router = require("../../Router");
+
+var _Auth = _interopRequireDefault(require("../../Auth"));
+
+var _Utils = _interopRequireDefault(require("../../Utils"));
+
+var _ProductAPI = _interopRequireDefault(require("../../ProductAPI"));
+
+var _Toast = _interopRequireDefault(require("../../Toast"));
+
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+class ProductView {
+  init() {
+    document.title = 'Product';
+    this.product = null;
+    this.render();
+
+    _Utils.default.pageIntroAnim();
+
+    this.getProducts();
+  }
+
+  async getProducts() {
+    try {
+      this.product = await _ProductAPI.default.getProducts();
+      console.log(this.product);
+      this.render();
+    } catch (err) {
+      _Toast.default.show(err, 'error');
+    }
+  }
+
+  render() {
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n      \n      <div class=\"page-content\">        \n      <div class=\"productInfo\">    \n       ", "\n       <button id=\"addCart\">ADD TO CART!</button>\n      </div>\n      </div> \n\n      <cb-app-footer></cb-app-footer>      \n    "])), JSON.stringify(_Auth.default.currentUser), this.product == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n        <img src: ../../images/loading...(2).gif"]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n        ", "\n        "])), this.product.map(product => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n        \n        <img src=\"", "\" alt=\"", "\">\n        <h1>\"", "\"</h1>\n        <p id=\"price\">Box of a dozen - \"", "\"</p>\n        <p id=\"description\">\"", "\"</p>\n        <p id=\"ingredientsHeading\">Ingredients</p>\n        <p id=\"ingredients\">\"", "\"</p>\n        "])), product.image, product.productName, product.productName, product.price, product.description, product.ingredients))));
+    (0, _litHtml.render)(template, _App.default.rootEl);
+  }
+
+}
+
+var _default = new ProductView();
+
+exports.default = _default;
+},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js","../../ProductAPI":"ProductAPI.js","../../Toast":"Toast.js"}],"Router.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13157,6 +13216,8 @@ var _newProduct = _interopRequireDefault(require("./views/pages/newProduct"));
 
 var _cart = _interopRequireDefault(require("./views/pages/cart"));
 
+var _product = _interopRequireDefault(require("./views/pages/product"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import views
@@ -13172,7 +13233,8 @@ const routes = {
   '/signin': _signin.default,
   '/signup': _signup.default,
   '/profile': _profile.default,
-  '/editProfile': _editProfile.default
+  '/editProfile': _editProfile.default,
+  '/product': _product.default
 };
 
 class Router {
@@ -13226,7 +13288,7 @@ function anchorRoute(e) {
   const pathname = e.target.closest('a').pathname;
   AppRouter.gotoRoute(pathname);
 }
-},{"./views/pages/home":"views/pages/home.js","./views/pages/404":"views/pages/404.js","./views/pages/signin":"views/pages/signin.js","./views/pages/signup":"views/pages/signup.js","./views/pages/profile":"views/pages/profile.js","./views/pages/editProfile":"views/pages/editProfile.js","./views/pages/aboutUs":"views/pages/aboutUs.js","./views/pages/shop":"views/pages/shop.js","./views/pages/favouriteProducts":"views/pages/favouriteProducts.js","./views/pages/newProduct":"views/pages/newProduct.js","./views/pages/cart":"views/pages/cart.js"}],"App.js":[function(require,module,exports) {
+},{"./views/pages/home":"views/pages/home.js","./views/pages/404":"views/pages/404.js","./views/pages/signin":"views/pages/signin.js","./views/pages/signup":"views/pages/signup.js","./views/pages/profile":"views/pages/profile.js","./views/pages/editProfile":"views/pages/editProfile.js","./views/pages/aboutUs":"views/pages/aboutUs.js","./views/pages/shop":"views/pages/shop.js","./views/pages/favouriteProducts":"views/pages/favouriteProducts.js","./views/pages/newProduct":"views/pages/newProduct.js","./views/pages/cart":"views/pages/cart.js","./views/pages/product":"views/pages/product.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17146,7 +17208,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54538" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51940" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
