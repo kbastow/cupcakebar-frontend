@@ -52,6 +52,7 @@ class ProductAPI {
     // return data
     return data
   }
+
 }
 
 export default new ProductAPI()
