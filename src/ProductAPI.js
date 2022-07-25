@@ -52,13 +52,29 @@ class ProductAPI {
     // return data
     return data
   }
-  
-  getParams() {
-  const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
-  return params;
-}
+
+  async getProduct(id){
+    // fetch the json data
+    const response = await fetch(`${App.apiBase}/product/${id}`, {
+      headers: { "Authorization": `Bearer ${localStorage.accessToken}`}
+    })
+
+    // if response not ok
+    if(!response.ok){
+      // console log error
+      const err = await response.json()
+      if(err) console.log(err)
+      // throw error (exit this function)
+      throw new Error('Problem getting products')
+    }
+
+    // convert response payload into json - store as data
+    const data = await response.json()
+    console.log(data)
+
+    // return data
+    return data
+  }
 }
 
 
