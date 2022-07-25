@@ -185,8 +185,8 @@ customElements.define(
             <a href="/" @click="${anchorRoute}">HOME</a>
             <a href="/shop" @click="${anchorRoute}">SHOP</a>
              ${this.user.accessLevel == 1
-              ? html` <a href="/favouriteProducts" @click="${anchorRoute}">FAVOURITES</a> `
-              : html`<a href="/newProduct" @click="${anchorRoute}">ADD PRODUCT</a>`}
+          ? html` <a href="/favouriteProducts" @click="${anchorRoute}">FAVOURITES</a> `
+          : html`<a href="/newProduct" @click="${anchorRoute}">ADD PRODUCT</a>`}
             <img class="app-logo" src="/images/brandmark.png" />
             <a href="/aboutUs" @click="${anchorRoute}">CONTACT</a>
             <a href="/cart" @click="${anchorRoute}">CART</a>
@@ -219,7 +219,7 @@ customElements.define(
             <a href="/editProfile" @click="${anchorRoute}">Edit Profile</a>
 
             ${this.user.accessLevel == 2
-              ? html`
+          ? html`
               <a href="/newProduct" @click="${this.menuClick}">Add Products</a>
               <a href="/jobs" @click="${this.menuClick}">Jobs</a>
                 `: ""}

@@ -9,7 +9,7 @@ class FavouriteProductsView {
     document.title = 'Favourite Cupcakes'
     this.render()
     Utils.pageIntroAnim()
-    this.getfavProducts()
+    this.getFavProducts()
     const timeline = gsap.timeline({ defaults: { duration: 1 } })
     timeline.from('h1', { opacity: 0 }, .2)
       .from('p',{ opacity: 0, y: '-50%', ease: 'bounce', stagger: .5 }, 1)

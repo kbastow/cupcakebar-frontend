@@ -12573,11 +12573,11 @@ class UserAPI {
     return data;
   }
 
-  async addFavProduct(productId) {
+  async addSavedProducts(productId) {
     // validate
     if (!productId) return; // fetch the json data
 
-    const response = await fetch("".concat(_App.default.apiBase, "/user/addFavProduct"), {
+    const response = await fetch("".concat(_App.default.apiBase, "/user/addSavedProducts"), {
       method: "PUT",
       headers: {
         "Authorization": "Bearer ".concat(localStorage.accessToken),
@@ -12976,7 +12976,7 @@ class FavouriteProductsView {
 
     _Utils.default.pageIntroAnim();
 
-    this.getfavProducts();
+    this.getFavProducts();
     const timeline = gsap.timeline({
       defaults: {
         duration: 1
@@ -17231,7 +17231,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64882" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49852" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

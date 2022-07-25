@@ -75,12 +75,12 @@ class UserAPI {
     return data;
   }
 
-  async addFavProduct(productId){
+  async addSavedProducts(productId){
     // validate
     if(!productId) return
 
     // fetch the json data
-    const response = await fetch(`${App.apiBase}/user/addFavProduct`, {
+    const response = await fetch(`${App.apiBase}/user/addSavedProducts`, {
       method: "PUT",
       headers: { "Authorization": `Bearer ${localStorage.accessToken}`, "Content-Type": 'application/json'},
       body: JSON.stringify({productId: productId})
