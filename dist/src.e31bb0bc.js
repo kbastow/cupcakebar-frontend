@@ -6563,6 +6563,13 @@ class Utils {
     });
   }
 
+  getParams() {
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop)
+    });
+    return params;
+  }
+
 }
 
 var _default = new Utils();
@@ -12792,6 +12799,7 @@ class ProductAPI {
   async getProducts() {
     // fetch the json data
     const response = await fetch("".concat(_App.default.apiBase, "/product"), {
+      method: 'GET',
       headers: {
         "Authorization": "Bearer ".concat(localStorage.accessToken)
       }
@@ -12811,11 +12819,27 @@ class ProductAPI {
     return data;
   }
 
-  getParams() {
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-      get: (searchParams, prop) => searchParams.get(prop)
-    });
-    return params;
+  async getProduct(id) {
+    // fetch the json data
+    const response = await fetch("".concat(_App.default.apiBase, "/product/").concat(id), {
+      headers: {
+        "Authorization": "Bearer ".concat(localStorage.accessToken)
+      }
+    }); // if response not ok
+
+    if (!response.ok) {
+      // console log error
+      const err = await response.json();
+      if (err) console.log(err); // throw error (exit this function)
+
+      throw new Error('Problem getting products');
+    } // convert response payload into json - store as data
+
+
+    const data = await response.json();
+    console.log(data); // return data
+
+    return data;
   }
 
 }
@@ -13183,22 +13207,40 @@ var _Auth = _interopRequireDefault(require("../../Auth"));
 
 var _Utils = _interopRequireDefault(require("../../Utils"));
 
-var _templateObject;
+var _ProductAPI = _interopRequireDefault(require("../../ProductAPI"));
+
+var _Toast = _interopRequireDefault(require("../../Toast"));
+
+var _templateObject, _templateObject2, _templateObject3;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 class ProductView {
-  init() {
+  async init() {
     document.title = 'Product';
+    this.product = null;
     this.render();
 
     _Utils.default.pageIntroAnim();
+
+    await this.getProduct();
+  }
+
+  async getProduct() {
+    try {
+      const productId = _Utils.default.getParams().productId;
+
+      this.product = await _ProductAPI.default.getProduct(productId);
+      this.render();
+    } catch (err) {
+      _Toast.default.show(err, "error");
+    }
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n      <div class=\"page-content\">        \n        <h1>Page title</h1>\n        <p>Page content ...</p>\n        \n      </div>\n      <cb-app-footer></cb-app-footer>      \n    "])), JSON.stringify(_Auth.default.currentUser));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n      <div class=\"page-content\">        \n         ", "\n      </div>\n      <cb-app-footer></cb-app-footer>      \n    "])), JSON.stringify(_Auth.default.currentUser), this.product == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <sl-spinner></sl-spinner> "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n              <h1>", "</h1>\n              <img slot=\"image\" src=\"", "/images/", "\" />\n            "])), this.product.productName, _App.default.apiBase, this.product.image));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -13207,7 +13249,7 @@ class ProductView {
 var _default = new ProductView();
 
 exports.default = _default;
-},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js"}],"Router.js":[function(require,module,exports) {
+},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js","../../ProductAPI":"ProductAPI.js","../../Toast":"Toast.js"}],"Router.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17049,7 +17091,7 @@ customElements.define("cb-shop", class Shop extends _litElement.LitElement {
   }
 
   render() {
-    return (0, _litElement.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <style>\n        .shop-btn::part(base) {\n          border-radius: 50px;\n          width: 100px;\n          border: 3px solid var(--brand-color);\n          font-size: 12px;\n          color: var(--brand-color);\n        }\n\n        .shop-btn::part(base):hover {\n          background-color: #e16a2f;\n          color: #f5dbdf;\n        }\n\n        .name {\n          text-transform: uppercase;\n        }\n\n        .product-card {\n          text-align: center;\n        }\n\n        .heart::part(base) {\n          color: var(--brand-color);\n        }\n\n      </style>\n        <sl-card class=\"product-card\">\n          <div class=\"img-container\">\n          <img slot=\"image\" src=\"", "/images/", "\" />\n          <sl-icon-button \n            class=\"heart\"\n            name=\"heart-fill\"\n            label=\"Add to Favourites\"\n            @click=", "\n          ></sl-icon-button>\n          </div>\n          <h3 class=\"name\">", "</h3>\n          <p>Box of a dozen - $", "</p>\n          <p>", "</p>\n          <sl-button class=\"shop-btn\" @click=", ">SHOP NOW!</sl-button>\n        </sl-card>\n      "])), _App.default.apiBase, this.image, this.addFavHandler.bind(this), this.productName, this.price, this.description, () => (0, _Router.gotoRoute)('/product'));
+    return (0, _litElement.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <style>\n        .shop-btn::part(base) {\n          border-radius: 50px;\n          width: 100px;\n          border: 3px solid var(--brand-color);\n          font-size: 12px;\n          color: var(--brand-color);\n        }\n\n        .shop-btn::part(base):hover {\n          background-color: #e16a2f;\n          color: #f5dbdf;\n        }\n\n        .name {\n          text-transform: uppercase;\n        }\n\n        .product-card {\n          text-align: center;\n        }\n\n        .heart::part(base) {\n          color: var(--brand-color);\n        }\n\n      </style>\n        <sl-card class=\"product-card\">\n          <div class=\"img-container\">\n          <img slot=\"image\" src=\"", "/images/", "\" />\n          <sl-icon-button \n            class=\"heart\"\n            name=\"heart-fill\"\n            label=\"Add to Favourites\"\n            @click=", "\n          ></sl-icon-button>\n          </div>\n          <h3 class=\"name\">", "</h3>\n          <p>Box of a dozen - $", "</p>\n          <p>", "</p>\n          <sl-button class=\"shop-btn\" @click=", ">SHOP NOW!</sl-button>\n        </sl-card>\n      "])), _App.default.apiBase, this.image, this.addFavHandler.bind(this), this.productName, this.price, this.description, () => (0, _Router.gotoRoute)("/product?productId=".concat(this.id)));
   }
 
 });
@@ -17231,7 +17273,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64882" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53477" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
