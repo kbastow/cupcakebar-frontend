@@ -103,7 +103,7 @@ customElements.define(
           <h3 class="name">${this.productName}</h3>
           <p>Box of a dozen - $${this.price}</p>
           <p>${this.description}</p>
-          <sl-button class="shop-btn" @click=${() => gotoRoute('/product')}>SHOP NOW!</sl-button>
+          <sl-button class="shop-btn" @click=${() => gotoRoute(`/product?productId=${this.id}`)}>SHOP NOW!</sl-button>
         </sl-card>
       `;
     }
