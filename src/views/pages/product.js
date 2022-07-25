@@ -30,8 +30,15 @@ class ProductView {
       <cb-app-header user="${JSON.stringify(Auth.currentUser)}"></cb-app-header>
 
       <div class="page-content">
-        <div class="productInfo">
-          ${this.product == null
+      <h1>Coming Soon</h1>
+        <div class="productInfo calign">
+        <br>
+        <br>
+        <br>
+        <br>
+        <p>Looking to purchase these cupcakes?
+        <br><b> Shop coming soon!! </b></p>
+          <!-- ${this.product == null
             ? html` <img src="../../images/loading...(2).gif" /> `
             : html`
                 ${this.product.map(
@@ -42,10 +49,14 @@ class ProductView {
                     <p id="description">"${product.description}"</p>
                     <p id="ingredientsHeading">Ingredients</p>
                     <p id="ingredients">"${product.ingredients}"</p>
+                    <p>"${product.glutenFree}"</p>
+                    <p>"${product.nutFree}"</p>
+                    <p>"${product.dairyFree}"</p>
+                    <p>"${product.vegan}"</p>
                   `
                 )}
               `}
-          <button id="addCart">ADD TO CART!</button>
+          <button id="addCart">ADD TO CART!</button> -->
         </div>
       </div>
       <cb-app-footer></cb-app-footer>
