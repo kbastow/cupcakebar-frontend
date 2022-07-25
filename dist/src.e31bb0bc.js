@@ -6563,6 +6563,13 @@ class Utils {
     });
   }
 
+  getParams() {
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop)
+    });
+    return params;
+  }
+
 }
 
 var _default = new Utils();
@@ -12979,6 +12986,10 @@ var _Auth = _interopRequireDefault(require("../../Auth"));
 
 var _Utils = _interopRequireDefault(require("../../Utils"));
 
+var _Toast = _interopRequireDefault(require("../../Toast"));
+
+var _UserAPI = _interopRequireDefault(require("../../UserAPI"));
+
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -12988,39 +12999,30 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 class FavouriteProductsView {
   init() {
     document.title = 'Favourite Cupcakes';
+    this.favProducts = null;
     this.render();
 
-    _Utils.default.pageIntroAnim();
+    _Utils.default.pageIntroAnim(); //const timeline = gsap.timeline({ defaults: { duration: 1 } })
+    //timeline.from('h1', { opacity: 0 }, .2)
+    //  .from('p', { opacity: 0, y: '-50%', ease: 'bounce', stagger: .5 }, 1)
 
-    this.getfavProducts();
-    const timeline = gsap.timeline({
-      defaults: {
-        duration: 1
-      }
-    });
-    timeline.from('h1', {
-      opacity: 0
-    }, .2).from('p', {
-      opacity: 0,
-      y: '-50%',
-      ease: 'bounce',
-      stagger: .5
-    }, 1);
+
+    this.getFavProducts();
   }
 
   async getFavProducts() {
     try {
-      const currentUser = await UserAPI.getUser(_Auth.default.currentUser._id);
-      this.favProducts = currentUser.favouriteProducts;
+      const currentUser = await _UserAPI.default.getUser(_Auth.default.currentUser._id);
+      this.favProducts = currentUser.savedProducts;
       console.log(this.favProducts);
       this.render();
     } catch (err) {
-      Toast.show(err, "error");
+      _Toast.default.show(err, "error");
     }
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header\n        user=\"", "\"\n      ></cb-app-header>\n      <div class=\"page-content\">\n       <div class=\"products-grid\">\n          ", "\n\n        </div>\n      </div>\n    "])), JSON.stringify(_Auth.default.currentUser), this.favProducts == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <sl-spinner></sl-spinner> "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n                  ", "\n                "])), this.favProducts.map(favourite => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n                      <cb-shop\n                        class=\"product-card\"\n                        id=\"", "\"\n                        productName=\"", "\"\n                        price=\"", "\"\n                        image=\"", "\"\n                      >\n                      </cb-shop>\n                    "])), favourite._id, favourite.productName, favourite.price, favourite.image))));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header\n        user=\"", "\"\n      ></cb-app-header>\n      <div class=\"page-content\">\n       <div class=\"products-grid\">\n          ", "\n\n        </div>\n      </div>\n    "])), JSON.stringify(_Auth.default.currentUser), this.favProducts == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <sl-spinner></sl-spinner> "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n                  ", "\n                "])), this.favProducts.map(product => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n                      <cb-shop\n                        class=\"product-card\"\n                        id=\"", "\"\n                        productName=\"", "\"\n                        price=\"", "\"\n                        image=\"", "\"\n                      >\n                      </cb-shop>\n                    "])), product._id, product.productName, product.price, product.image))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -13050,7 +13052,7 @@ class FavouriteProductsView {
 var _default = new FavouriteProductsView();
 
 exports.default = _default;
-},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js"}],"views/pages/newProduct.js":[function(require,module,exports) {
+},{"../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","../../Router":"Router.js","../../Auth":"Auth.js","../../Utils":"Utils.js","../../Toast":"Toast.js","../../UserAPI":"UserAPI.js"}],"views/pages/newProduct.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13211,7 +13213,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 class ProductView {
   async init() {
-    document.title = 'Product';
+    document.title = "Product";
     this.product = null;
     this.render();
 
@@ -13232,7 +13234,7 @@ class ProductView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n      \n      <div class=\"page-content\">        \n      <div class=\"productInfo\">    \n       ", "\n       <button id=\"addCart\">ADD TO CART!</button>\n      </div>\n      </div> \n      <cb-app-footer></cb-app-footer>      \n    "])), JSON.stringify(_Auth.default.currentUser), this.product == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n        <img src= \"../../images/loading...(2).gif\"> "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n        ", "\n        "])), this.product.map(product => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n        \n        <img src=\"", "\" alt=\"", "\">\n        <h1>\"", "\"</h1>\n        <p id=\"price\">Box of a dozen - \"", "\"</p>\n        <p id=\"description\">\"", "\"</p>\n        <p id=\"ingredientsHeading\">Ingredients</p>\n        <p id=\"ingredients\">\"", "\"</p>\n        "])), product.image, product.productName, product.productName, product.price, product.description, product.ingredients))));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <cb-app-header user=\"", "\"></cb-app-header>\n\n      <div class=\"page-content\">\n        <div class=\"productInfo\">\n          ", "\n          <button id=\"addCart\">ADD TO CART!</button>\n        </div>\n      </div>\n      <cb-app-footer></cb-app-footer>\n    "])), JSON.stringify(_Auth.default.currentUser), this.product == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <img src=\"../../images/loading...(2).gif\" /> "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n                ", "\n              "])), this.product.map(product => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n                    <img src=\"", "\" alt=\"", "\" />\n                    <h1>", "</h1>\n                    <p id=\"price\">Box of a dozen - \"", "\"</p>\n                    <p id=\"description\">\"", "\"</p>\n                    <p id=\"ingredientsHeading\">Ingredients</p>\n                    <p id=\"ingredients\">\"", "\"</p>\n                  "])), product.image, product.productName, product.productName, product.price, product.description, product.ingredients))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -17074,7 +17076,7 @@ customElements.define("cb-shop", class Shop extends _litElement.LitElement {
 
   async addFavHandler() {
     try {
-      await _UserAPI.default.addFavProduct(this.id);
+      await _UserAPI.default.addSavedProducts(this.id);
 
       _Toast.default.show("Product added to favourites");
     } catch (err) {
@@ -17265,7 +17267,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49954" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55035" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

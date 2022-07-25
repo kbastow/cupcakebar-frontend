@@ -54,7 +54,7 @@ customElements.define(
 
     async addFavHandler() {
       try {
-        await UserAPI.addFavProduct(this.id);
+        await UserAPI.addSavedProducts(this.id);
         Toast.show("Product added to favourites");
       } catch (err) {
         Toast.show(err, "error");

@@ -3,22 +3,26 @@ import { html, render } from 'lit-html'
 import { gotoRoute, anchorRoute } from '../../Router'
 import Auth from '../../Auth'
 import Utils from '../../Utils'
+import Toast from '../../Toast'
+import UserAPI from '../../UserAPI'
+
 
 class FavouriteProductsView {
   init() {
     document.title = 'Favourite Cupcakes'
+    this.favProducts = null;
     this.render()
     Utils.pageIntroAnim()
-    this.getfavProducts()
-    const timeline = gsap.timeline({ defaults: { duration: 1 } })
-    timeline.from('h1', { opacity: 0 }, .2)
-      .from('p',{ opacity: 0, y: '-50%', ease: 'bounce', stagger: .5 }, 1)
+    //const timeline = gsap.timeline({ defaults: { duration: 1 } })
+    //timeline.from('h1', { opacity: 0 }, .2)
+    //  .from('p', { opacity: 0, y: '-50%', ease: 'bounce', stagger: .5 }, 1)
+    this.getFavProducts()
   }
 
    async getFavProducts() {
     try {
       const currentUser = await UserAPI.getUser(Auth.currentUser._id);
-      this.favProducts = currentUser.favouriteProducts;
+      this.favProducts = currentUser.savedProducts;
       console.log(this.favProducts);
       this.render();
     } catch (err) {
@@ -38,13 +42,13 @@ class FavouriteProductsView {
               ? html` <sl-spinner></sl-spinner> `
               : html`
                   ${this.favProducts.map(
-                    (favourite) => html`
+                    (product) => html`
                       <cb-shop
                         class="product-card"
-                        id="${favourite._id}"
-                        productName="${favourite.productName}"
-                        price="${favourite.price}"
-                        image="${favourite.image}"
+                        id="${product._id}"
+                        productName="${product.productName}"
+                        price="${product.price}"
+                        image="${product.image}"
                       >
                       </cb-shop>
                     `
